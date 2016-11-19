@@ -1,33 +1,15 @@
 package wasdev.sample.servlet;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.apache.http.HttpEntity;
-import org.hamcrest.core.IsNull;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
-
-import com.google.gson.internal.LinkedTreeMap;
 import com.ibm.watson.developer_cloud.conversation.v1.ConversationService;
 import com.ibm.watson.developer_cloud.conversation.v1.model.MessageRequest;
 import com.ibm.watson.developer_cloud.conversation.v1.model.MessageResponse;
-import java.util.Map;
-import com.ibm.watson.developer_cloud.conversation.v1.model.MessageRequest;
-import com.ibm.watson.developer_cloud.conversation.v1.model.MessageResponse;
-import com.ibm.watson.developer_cloud.http.ServiceCallback;
 
-
-import jersey.repackaged.jsr166e.CompletableFuture;
 
 /**
  * Servlet implementation class WatsonInteraction
