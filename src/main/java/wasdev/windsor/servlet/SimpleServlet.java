@@ -1,4 +1,4 @@
-package wasdev.sample.servlet;
+package wasdev.windsor.servlet;
 
 import java.io.IOException;
 

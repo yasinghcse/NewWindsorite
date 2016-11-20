@@ -1,5 +1,11 @@
-package wasdev.sample.servlet;
+/**
+ * This class hold the connection logic to watson
+ * All Watson communication passes through this servlet
+ * 
+ * @author yadwindersingh
+ */
 
+package wasdev.windsor.servlet;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
