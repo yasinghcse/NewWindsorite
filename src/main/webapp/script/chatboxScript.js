@@ -3,7 +3,8 @@ var userName="";
 //bot display function
 function displayBotMessage(message){
   var prevMessage = $('#container').html();
-  console.log("message.length" + message.length);
+  console.log("message**" + message);
+  console.log("message.length**" + message.length);
 
   if(prevMessage.length >6){
     prevMessage= prevMessage + "<br>";
@@ -23,13 +24,13 @@ function getMessage() {
 
 //bot regular function
 function watsonAIHandling(message){
-  console.log(userName.length );
-  console.log(message);
+  //console.log(userName.length );
+ // console.log(message);
   if(userName.length < 1){
     userName=message;
 
     displayBotMessage("Nice to meet you " + userName + "!!");
-    console.log(userName);
+    //console.log(userName);
     resetConversation();
     console.log(userName+ "2");
   }

@@ -5,7 +5,18 @@
 xhrGet("OpenDataInteraction?call=garbage", function(responseText){
 	// add to document
 	var mytitle = document.getElementById('message');
-	mytitle.innerHTML = responseText;
+	
+	//---------------
+	var test = JSON.parse(responseText);
+	console.log(test);
+	var result="";
+	for(var i=0; i < test.length ; i++){
+		result += test[i];
+		result += "<br>";
+	}
+	
+	//--------------------
+	mytitle.innerHTML = result;
 
 }, function(err){
 	console.log(err);
