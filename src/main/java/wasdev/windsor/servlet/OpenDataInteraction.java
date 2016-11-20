@@ -30,15 +30,15 @@ public class OpenDataInteraction extends HttpServlet {
 			System.out.println("insufficient parameters");
 			response.getWriter().print("insufficient parameters");
 		}
-		else if (request.getParameter("call") == "garbage") {
+		else if (request.getParameter("call").equalsIgnoreCase("garbage")) {
 			System.out.println("Calling the Wastage Collection API");
 			response.getWriter().print(obj.getGarabageCollDetails());
 		}
-		else if (request.getParameter("call") == "events") {
+		else if (request.getParameter("call").equalsIgnoreCase("events")) {
 			System.out.println("Calling the Event Info API");
 			response.getWriter().print(obj.getEventDetails());
 		}
-		else if (request.getParameter("call") == "construction") {
+		else if (request.getParameter("call").equalsIgnoreCase("construction")) {
 			System.out.println("Calling the Construction Info API");
 			response.getWriter().print(obj.getConstructionDetails());
 		}
