@@ -17,6 +17,7 @@ import newwindsorite.db.UserProfileNotFoundException;
 import wasdev.windsor.db.CloudantDBManager;
 import wasdev.windsor.facade.NewWindsoriteFacade;
 import wasdev.windsor.resources.UserProfile;
+import wasdev.windsor.resources.WindsorOpenDataApi;
 import wasdev.windsor.resources.WindsoriteUtil;
 
 
@@ -69,7 +70,7 @@ public class WindsoriteServletController extends HttpServlet {
 	        		//get the user info from session
 	        		HttpSession s = request.getSession(false);
 					UserProfile userProfile = (UserProfile) s.getAttribute("UserProfile");
-	        		System.out.println("usrename in controller ****" + userProfile.getUserName());
+	        		System.out.println("username in controller ****" + userProfile.getUserName());
 	        		System.out.println("userProfile1.email"+ userProfile.getEmail());
 	        		System.out.println("user email we got = " + userProfile.getEmail());
 	        		System.out.println("p1 in session = " + userProfile.getRecomentation1());
@@ -79,6 +80,25 @@ public class WindsoriteServletController extends HttpServlet {
 	        		//calling the update function
 	        		updateUserProfile(request, response, userProfile);	
 	        	}
+	        	else if (controllerAction.equals("getRecommendations")) {
+	        		
+	        		//get the user info from session
+	        		HttpSession s = request.getSession(false);
+	        		
+	        		//local test code
+					UserProfile userProfile = new UserProfile("test2");
+					userProfile.setRecomentation1("TrafficCharacter");
+					userProfile.setRecomentation2("forgot things");
+					userProfile.setRecomentation3("SocialCharacter");
+					
+					//UserProfile userProfile =(UserProfile) s.getAttribute("UserProfile");
+	        		System.out.println("username in controller ****" + userProfile.getUserName());
+	        		
+	        		//calling the OpenData API to get all the required 
+	        		WindsorOpenDataApi obj = new WindsorOpenDataApi();
+	        		response.getWriter().print(obj.getAllRecommendations(userProfile));
+	        		
+	        	} 
 	        	else if (controllerAction.equals("insProf")) {
 	        		UserProfile userProfile = new UserProfile(request.getParameter("userName"));
 	        		userProfile.setEmail(request.getParameter("email"));
@@ -88,7 +108,8 @@ public class WindsoriteServletController extends HttpServlet {
 	        		String hashedPassword = WindsoriteUtil.generateStringHash(request.getParameter("password"));
 	        		userProfile.setPasswordHash(hashedPassword);
 	        		insertUserProfile(request, response, userProfile);
-	        	} else if (controllerAction.equals("delProf")) {
+	        	} 
+	        	else if (controllerAction.equals("delProf")) {
 	        		removeUserProfile(request, response, request.getParameter("userName"));
 	        	} else if (controllerAction.equals("finProf")) {
 	        		searchUserProfile(request, response, request.getParameter("userName"));

@@ -76,7 +76,7 @@ public class CloudantDBManager {
 		String password = "93e9e25f03d5b88071c8bce0c124852eb2c122de2644333ad4073a368c935e6a";
 
 
-		//uncomment me
+		//commenting the code , As we are providing the hardcoded user name and password
 //		if (VCAP_SERVICES != null) {
 //			// parse the VCAP JSON structure
 //			JsonObject obj = (JsonObject) new JsonParser().parse(VCAP_SERVICES);

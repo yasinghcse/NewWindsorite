@@ -2,10 +2,11 @@
 
 // request message on server
 //Calls SimpleServlet to get the "Hello World" message
-xhrGet("OpenDataInteraction?call=garbage", function(responseText){
+xhrGet("Controller?act=getRecommendations", function(responseText){
 	// add to document
 	var mytitle = document.getElementById('message');
-	
+	console.log(responseText);
+		
 	//---------------
 	var test = JSON.parse(responseText);
 	console.log(test);

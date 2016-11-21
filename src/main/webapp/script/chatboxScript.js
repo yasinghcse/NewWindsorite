@@ -12,8 +12,6 @@ function displayBotMessage(message){
   $('#container').html(prevMessage +
   "<span class = 'currMessage'><div class='alert alert-success' id='dialog-box'><span class = 'bot' =>Watson: </span>" +
   message + "</div></span>");
-  //$('.currMessage').hide().delay(750).fadeIn('slow');
-  //$('.currMessage').removeClass('currMessage');
   $('#container').scrollTop($('#container').prop("scrollHeight"));
 }
 
@@ -24,13 +22,10 @@ function getMessage() {
 
 //bot regular function
 function watsonAIHandling(message){
-  //console.log(userName.length );
- // console.log(message);
   if(userName.length < 1){
     userName=message;
 
     displayBotMessage("Nice to meet you " + userName + "!!");
-    //console.log(userName);
     resetConversation();
     console.log(userName+ "2");
   }
