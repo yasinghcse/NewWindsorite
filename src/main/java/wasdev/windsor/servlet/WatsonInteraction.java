@@ -51,6 +51,15 @@ public class WatsonInteraction extends HttpServlet {
 			MessageRequest newMessage = null;
 			MessageResponse response1 = null;
 			if (request.getParameter("new") != null) {
+
+				// dummy function to create the login connection
+				request.setAttribute("userName", "test1");
+				request.setAttribute("password", "test");
+				RequestDispatcher rd = request
+						.getRequestDispatcher("/Controller?act=login&userName=test2&password=test");
+				rd.include(request, response);
+
+				// connecting to the Wastson API
 				service = new ConversationService(ConversationService.VERSION_DATE_2016_07_11);
 				service.setUsernameAndPassword("fd8dd41f-2f5f-4bbe-b42e-b519e85f39a4", "jxSvoafD6MYc");
 				newMessage = new MessageRequest.Builder().inputText("").build();
@@ -114,31 +123,32 @@ public class WatsonInteraction extends HttpServlet {
 						System.out.println("invalid context");
 					}
 				} else {
-					if (test.get(0).equals("Have a good day. Your recommendations has been overwritten.")) {
-						// test values
-						// UserProfile u1= new
-						// UserProfile(request.getParameter("userName"));
-						UserProfile u1 = new UserProfile("test");
-						u1.setEmail("test@gmail.com");
-						u1.setName("Clovis");
+					if (test.get(0).equals("Have a good day. Your recommendations has been overwritten.")
+							|| test.get(0).equals("No more recommendations to set")) {
+
+						// get user name from session
+						HttpSession session1 = request.getSession(false);
+						UserProfile userProfile = (UserProfile) session1.getAttribute("UserProfile");
+						userProfile.setRecomentation1(null);
+						userProfile.setRecomentation2(null);
+						userProfile.setRecomentation3(null);
+						// set the correct recommendations in the session
 						if (response1.getContext().get("p1") != null) {
-							u1.setRecomentation1(response1.getContext().get("p1").toString());
-							if (response1.getContext().get("p2")!= null) {
-								u1.setRecomentation2(response1.getContext().get("p2").toString());
+							userProfile.setRecomentation1(response1.getContext().get("p1").toString());
+							if (response1.getContext().get("p2") != null) {
+								userProfile.setRecomentation2(response1.getContext().get("p2").toString());
 								if (response1.getContext().get("p3") != null) {
-									u1.setRecomentation3(response1.getContext().get("p3").toString());
+									userProfile.setRecomentation3(response1.getContext().get("p3").toString());
 								}
 							}
 						}
-						System.out.println("*****"+u1.getRecomentation1());
-						UserProfile userProfile = (UserProfile) localSession.getAttribute("userName");
-						System.out.println("u" + userProfile);
-						request.setAttribute("userName", "test1");
-						request.setAttribute("password", "test");
-						System.out.println(request.getAttribute("userName"));
-						RequestDispatcher rd = request.getRequestDispatcher("/Controller?act=login");
+
+						// calling the Controller to perform update
+						RequestDispatcher rd = request.getRequestDispatcher("/Controller?act=updtRec");
 						rd.include(request, response);
 					}
+					
+					//preparing the response back to the user
 					for (int i = 0; i < response1.getText().size(); i++) {
 						response.getWriter().print(response1.getText().get(i) + "<br>");
 						System.out.println("***********" + response1.getText().get(i) + "****************");

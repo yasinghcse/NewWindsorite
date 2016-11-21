@@ -20,6 +20,7 @@ import com.google.gson.JsonParser;
 import newwindsorite.db.UserProfileAlreadyExistentException;
 import newwindsorite.db.UserProfileNotFoundException;
 import wasdev.windsor.resources.UserProfile;
+import wasdev.windsor.resources.WindsoriteUtil;
 
 public class CloudantDBManager {
 
@@ -40,13 +41,16 @@ public class CloudantDBManager {
 	 * @return Returns the singleton reference to the CloudantDBManager  
 	 */
 	public static CloudantDBManager getInstance() {
+		System.out.println("singletonCloudant" + singletonCloudant);
 		synchronized (CloudantDBManager.class) {
 			if (singletonCloudant == null) {
 				singletonCloudant = new CloudantDBManager();
 				singletonCloudant.cloudant = createClient();
 				try {
+					System.out.println("cgoing for creating db connections");
 					singletonCloudant.db = singletonCloudant.cloudant.database(singletonCloudant.databaseName, true);
 				} catch (Exception e) {
+					System.out.println("inside exception of db not found");
 					throw new RuntimeException("DB Not found", e);
 				}
 			}
@@ -127,6 +131,8 @@ public class CloudantDBManager {
 		if (userName != null) {
 			HashMap<String, Object> foundDocument = null;
 			try {
+				System.out.println("userName" + userName);
+				System.out.println("db*****" + db);
 				foundDocument = db.find(HashMap.class, userName);
 			} catch (NoDocumentException ex) {
 			}
@@ -236,11 +242,11 @@ public class CloudantDBManager {
 	
 	public static void main(String[] arr) throws UserProfileAlreadyExistentException {
 		CloudantDBManager obj = CloudantDBManager.getInstance();
-		UserProfile u1= new UserProfile("test1");
+		UserProfile u1= new UserProfile("test2");
 		u1.setEmail("test@test.cm");
 		u1.setName("Clovis");
 		u1.setAddress("test test test");
-		u1.setPasswordHash("test");
+		u1.setPasswordHash(WindsoriteUtil.generateStringHash("test"));
 		obj.insertUserProfile(u1);
 		
 	}

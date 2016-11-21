@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.cloudant.http.Http;
+
 import newwindsorite.db.UserProfileAlreadyExistentException;
 import newwindsorite.db.UserProfileNotFoundException;
 import wasdev.windsor.db.CloudantDBManager;
@@ -48,21 +50,36 @@ public class WindsoriteServletController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html");
         try {
-	        response.getWriter().print("Hit the Controller Servlet<BR><BR>");
+	        //response.getWriter().print("Hit the Controller Servlet<BR><BR>");
 	        String controllerAction = request.getParameter("act");
-	
+	        System.out.println("contoller action ==" + controllerAction);
 	        if (controllerAction != null) {
 	        	if (controllerAction.equals("updtProf")) {
 	        		UserProfile userProfile = new UserProfile(request.getParameter("userName"));
 	        		System.out.println("usrename in controller" + userProfile.getUserName());
 	        		//commenting the code so that the calling function set all new user values
-//	        		userProfile.setEmail(request.getParameter("email"));
-//	        		userProfile.setName(request.getParameter("name"));
-//	        		userProfile.setAddress(request.getParameter("address"));
-//	        		userProfile.setZipCOde(request.getParameter("zipcode"));
+	        		userProfile.setEmail(request.getParameter("email"));
+	        		userProfile.setName(request.getParameter("name"));
+	        		userProfile.setAddress(request.getParameter("address"));
+	        		userProfile.setZipCOde(request.getParameter("zipcode"));
 	        		
 	        		updateUserProfile(request, response, userProfile);	
-	        	} else if (controllerAction.equals("insProf")) {
+	        	} else if (controllerAction.equals("updtRec")) {
+	        		
+	        		//get the user info from session
+	        		HttpSession s = request.getSession(false);
+					UserProfile userProfile = (UserProfile) s.getAttribute("UserProfile");
+	        		System.out.println("usrename in controller ****" + userProfile.getUserName());
+	        		System.out.println("userProfile1.email"+ userProfile.getEmail());
+	        		System.out.println("user email we got = " + userProfile.getEmail());
+	        		System.out.println("p1 in session = " + userProfile.getRecomentation1());
+	        		System.out.println("p2 in the session = " + userProfile.getRecomentation2());
+	        		System.out.println("p3 in the session = " + userProfile.getRecomentation3() );
+	        		
+	        		//calling the update function
+	        		updateUserProfile(request, response, userProfile);	
+	        	}
+	        	else if (controllerAction.equals("insProf")) {
 	        		UserProfile userProfile = new UserProfile(request.getParameter("userName"));
 	        		userProfile.setEmail(request.getParameter("email"));
 	        		userProfile.setName(request.getParameter("name"));
@@ -76,6 +93,7 @@ public class WindsoriteServletController extends HttpServlet {
 	        	} else if (controllerAction.equals("finProf")) {
 	        		searchUserProfile(request, response, request.getParameter("userName"));
 	        	} else if (controllerAction.equals("login")) {
+	        		System.out.println("******************");
 	        		System.out.println("username " +  request.getParameter("userName"));
 	        		System.out.println("password " +  request.getParameter("password"));
 	        		systemLogin(request, response, request.getParameter("userName"), request.getParameter("password"));
@@ -143,6 +161,7 @@ public class WindsoriteServletController extends HttpServlet {
 				session.setAttribute("UserProfile", user);
 				response.getWriter().print("User LOGGED IN!<BR>");
 			} else {
+				System.out.println("Password incorrect");
 				response.getWriter().print("User Profile by User Name '" + userName + "': INVALID PASSWORD, cannot LOG IN!<BR>");
 			}
 		} catch (UserProfileNotFoundException ex) {
@@ -175,6 +194,17 @@ public class WindsoriteServletController extends HttpServlet {
 		} catch (UserProfileNotFoundException ex) {
 			response.getWriter().print("User Profile by User Name '" + userName + "' NOT FOUND!<BR>");
 		}
+	}
+	
+	//yadi
+	private UserProfile getUserProfile(HttpServletRequest request, HttpServletResponse response, String userName) throws IOException {
+		UserProfile user = null;
+		try {
+			 user= windsoriteFacade.searchUserProfileByUserName(userName);
+		} catch (UserProfileNotFoundException ex) {
+			response.getWriter().print("User Profile by User Name '" + userName + "' NOT FOUND!<BR>");
+		}
+		return user;
 	}
 
 	/**
@@ -230,19 +260,23 @@ public class WindsoriteServletController extends HttpServlet {
 	private void updateUserProfile(HttpServletRequest request, HttpServletResponse response, UserProfile user) throws IOException {
 		if (isSessionValid(request)) {
 			try {
-				response.getWriter().print("Update Result: <BR>");
+				//yadi changes
+				//commenting debugs so that they are not visible on watson chat
+				
+				
+//				response.getWriter().print("Update Result: <BR>");
 				System.out.println("Inside Update Profile");
 				windsoriteFacade.updateUserProfile(user);
-				response.getWriter().print("User Profile by User Name '" + user.getUserName() + "' UPDATED!<BR><BR>");
-				response.getWriter().print("id = " + user.get_id() + "<BR>");
-				response.getWriter().print("UserName = " + user.getUserName() + "<BR>");
-				response.getWriter().print("Name = " + user.getName() + "<BR>");
-				response.getWriter().print("Email = " + user.getEmail() + "<BR>");
-				response.getWriter().print("Address = " + user.getAddress() + "<BR>");
-				response.getWriter().print("ZipCode = " + user.getZipCOde() + "<BR>");
-				response.getWriter().print("Recomendation 1 = " + user.getRecomentation1() + "<BR>");
-				response.getWriter().print("Recomendation 2 = " + user.getRecomentation2() + "<BR>");
-				response.getWriter().print("Recomendation 3 = " + user.getRecomentation3() + "<BR>");
+//				response.getWriter().print("User Profile by User Name '" + user.getUserName() + "' UPDATED!<BR><BR>");
+//				response.getWriter().print("id = " + user.get_id() + "<BR>");
+//				response.getWriter().print("UserName = " + user.getUserName() + "<BR>");
+//				response.getWriter().print("Name = " + user.getName() + "<BR>");
+//				response.getWriter().print("Email = " + user.getEmail() + "<BR>");
+//				response.getWriter().print("Address = " + user.getAddress() + "<BR>");
+//				response.getWriter().print("ZipCode = " + user.getZipCOde() + "<BR>");
+//				response.getWriter().print("Recomendation 1 = " + user.getRecomentation1() + "<BR>");
+//				response.getWriter().print("Recomendation 2 = " + user.getRecomentation2() + "<BR>");
+//				response.getWriter().print("Recomendation 3 = " + user.getRecomentation3() + "<BR>");
 			} catch (UserProfileNotFoundException ex) {
 				response.getWriter().print("User Profile by User Name '" + user.getUserName() + "' NOT FOUND!<BR>");
 			}
