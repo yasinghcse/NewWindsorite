@@ -215,6 +215,7 @@ public class CloudantDBManager {
 		if (updatedUser != null) {
 			HashMap<String, Object> foundDocument = null;
 			try {
+				System.out.println("updatedUser.getUserName() " + updatedUser.getUserName());
 				foundDocument = db.find(HashMap.class, updatedUser.getUserName());
 			} catch (NoDocumentException ex) {
 			}
@@ -235,10 +236,11 @@ public class CloudantDBManager {
 	
 	public static void main(String[] arr) throws UserProfileAlreadyExistentException {
 		CloudantDBManager obj = CloudantDBManager.getInstance();
-		UserProfile u1= new UserProfile("test");
+		UserProfile u1= new UserProfile("test1");
 		u1.setEmail("test@test.cm");
 		u1.setName("Clovis");
 		u1.setAddress("test test test");
+		u1.setPasswordHash("test");
 		obj.insertUserProfile(u1);
 		
 	}

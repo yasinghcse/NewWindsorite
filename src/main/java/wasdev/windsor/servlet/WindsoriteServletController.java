@@ -54,10 +54,13 @@ public class WindsoriteServletController extends HttpServlet {
 	        if (controllerAction != null) {
 	        	if (controllerAction.equals("updtProf")) {
 	        		UserProfile userProfile = new UserProfile(request.getParameter("userName"));
-	        		userProfile.setEmail(request.getParameter("email"));
-	        		userProfile.setName(request.getParameter("name"));
-	        		userProfile.setAddress(request.getParameter("address"));
-	        		userProfile.setZipCOde(request.getParameter("zipcode"));
+	        		System.out.println("usrename in controller" + userProfile.getUserName());
+	        		//commenting the code so that the calling function set all new user values
+//	        		userProfile.setEmail(request.getParameter("email"));
+//	        		userProfile.setName(request.getParameter("name"));
+//	        		userProfile.setAddress(request.getParameter("address"));
+//	        		userProfile.setZipCOde(request.getParameter("zipcode"));
+	        		
 	        		updateUserProfile(request, response, userProfile);	
 	        	} else if (controllerAction.equals("insProf")) {
 	        		UserProfile userProfile = new UserProfile(request.getParameter("userName"));
@@ -73,10 +76,21 @@ public class WindsoriteServletController extends HttpServlet {
 	        	} else if (controllerAction.equals("finProf")) {
 	        		searchUserProfile(request, response, request.getParameter("userName"));
 	        	} else if (controllerAction.equals("login")) {
+	        		System.out.println("username " +  request.getParameter("userName"));
+	        		System.out.println("password " +  request.getParameter("password"));
 	        		systemLogin(request, response, request.getParameter("userName"), request.getParameter("password"));
 	        	} else if (controllerAction.equals("logout")) {
 	        		systemLogout(request, response);	        		
-	        	} else { 
+	        	} else if(controllerAction.equals("valSession")){
+	        		//yadi changes
+	        		if(isSessionValid(request)){
+	        			response.getWriter().print("Valid User.");	
+	        		}
+	        		else{
+	        			response.getWriter().print("Invalid User");	
+	        		}
+	        	} 
+	        	else { 
 	        		response.getWriter().print("ACT tag not not valid<BR><BR>");
 	        		response.getWriter().print("ACT =  updtProf to UPDATE PROFILE<BR>");
 	        		response.getWriter().print("ACT = insProf to INSERT PROFILE<BR>");
@@ -217,6 +231,7 @@ public class WindsoriteServletController extends HttpServlet {
 		if (isSessionValid(request)) {
 			try {
 				response.getWriter().print("Update Result: <BR>");
+				System.out.println("Inside Update Profile");
 				windsoriteFacade.updateUserProfile(user);
 				response.getWriter().print("User Profile by User Name '" + user.getUserName() + "' UPDATED!<BR><BR>");
 				response.getWriter().print("id = " + user.get_id() + "<BR>");
