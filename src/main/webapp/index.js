@@ -22,25 +22,24 @@ xhrGet("Controller?act=getRecommendations", function(responseText){
 	        //console.log(dataCopy[key]);
 	        test1+=dataCopy[key]+ "<br>";
 	    }
-	    
+	    console.log("event" + event);
 	    console.log("test1" + test1);
 	    if(count == 1){
 			document.getElementById("rec1").style.display ="block";
-			document.getElementById('id1').innerHTML =event; 
-			document.getElementById('p1').innerHTML =test1;
+			document.getElementById('title1').innerHTML =event; 
+			document.getElementById('r1').innerHTML =test1;
 		}
 		else if(count == 2){
 			document.getElementById("rec2").style.display ="block";
-			document.getElementById('id2').innerHTML =event;
-			document.getElementById('p2').innerHTML =test1;
+			document.getElementById('title2').innerHTML =event;
+			document.getElementById('r2').innerHTML =test1;
 		}
 		else if(count == 3){
 			document.getElementById("rec3").style.display ="block";
-			document.getElementById('id3').innerHTML =event;
-			document.getElementById('p3').innerHTML =test1;
+			document.getElementById('title3').innerHTML =event;
+			document.getElementById('r3').innerHTML =test1;
 		}
 	    
-	     
 	    count++;
 	}
 

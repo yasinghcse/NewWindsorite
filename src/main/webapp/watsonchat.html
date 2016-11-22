@@ -54,7 +54,7 @@
 
 	<div class="animsition" data-animsition-in="fade-in" data-animsition-out="fade-out">
 
-		<!-- Navigation panel
+	<!-- Navigation panel
 		================================================== -->
 		<nav class="main-nav js-stick">
 			<div class="full-wrapper relative clearfix">
@@ -128,124 +128,29 @@
 			</div>
 		</nav>
 		<!-- End Navigation panel -->
-
-		<!-- MAIN CONTENT
-		================================================== -->
-		<main class="cd-main-content">
-
-			<!-- TOP SECTION
-			================================================== -->
-			<div class="col-sm-12">
-				<div class="col-sm-8"></div>	
-					<div class="col-sm-4" style="font-size: 26px; margin-top: 21px; border: 2px solid #000; padding: 8px 14px;">
-						<h3>Name:</h3>
-						<h3>Email:</h3>
-						<h3>Address:</h3>
-						<h3>Zipcode:</h3>
-					</div>
+		<div class = "whole" >
+			<div class="container1">
+				<div class="jumbotron" id="container"></div>
 			</div>
-
-
-			<div class="col-sm-2"></div>
-			<div class="col-sm-8"><!-- ACCORDION STYLE
-			================================================== -->
-			<section class="page-section white-section sp-top-bottom100" >
-				<div class="#">
-					<div class="#">
-						<div class="accordion" >
-							<div class="accordion_in" id ="rec1" style="display: none;">
-								<div class="acc_head black-section" id ="title1"></div>
-								<div class="acc_content white-section">
-								<p id ="r1"></p>
-								</div>
-							</div>
-
-							<div class="accordion_in" id ="rec2" style="display: none;">
-								<div class="acc_head black-section" id ="title2"></div>
-								<div class="acc_content white-section">
-								<p id ="r2" ></p>
-								</div>
-							</div>
-
-							<div class="accordion_in">
-								<div  class="acc_head black-section" id ="rec3" style="display: none;">Garbage Collection</div>
-								<div class="acc_head black-section" id ="title3"></div>
-								<div class="acc_content white-section">
-								<p id = "r3"></p>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</section>
+			<div id="controls">
+				<textarea class="form-control" rows="1" id="textbox"
+					placeholder="Enter your message here .."></textarea>
+				<button type="button" class="btn btn-primary" style="display: none;"
+					id="send">Send</button>
+				<input type="checkbox" id="enter" style="display: none;"
+					checked="true" display:none /> <label style="display: none;">Send
+					on enter</label>
+			</div>
 		</div>
-		<div class="col-sm-2"></div>
-
-			<!-- FOOTER
-			================================================== -->
-			<section class="page-section grey-section footer sp-top80 sp-bottom100">
-				<div class="container">
-					<div class="sixteen columns text-center" data-sr="enter bottom over 0.8s and move 140px">
-
-						<!-- FOOTER SOCIAL LINK FOR SMALL DEVICES
-						================================================== -->
-						<div class="footer-social-links">
-							<a target="_blank" title="Facebook" href="#"><i class="fa fa-facebook"></i></a>
-							<a target="_blank" title="Twitter" href="#"><i class="fa fa-twitter"></i></a>
-							<a target="_blank" title="Behance" href="#"><i class="fa fa-behance"></i></a>
-							<a target="_blank" title="LinkedIn+" href="#"><i class="fa fa-linkedin"></i></a>
-							<a target="_blank" title="Pinterest" href="#"><i class="fa fa-pinterest"></i></a>
-						</div>
-
-						<!-- FOOTER SOCIAL LINK FOR LARGE DEVICES
-						================================================== -->
-						<div class="share clearfix">
-							<button class="share-toggle-button">
-								<i class="share-icon fa fa-share-alt"></i>
-							</button>
-							<ul class="share-items">
-								<li class="share-item">
-									<a href="#" class="share-button">
-										<i class="share-icon fa fa-facebook"></i>
-									</a>
-								</li>
-								<li class="share-item">
-									<a href="#" class="share-button">
-										<i class="share-icon fa fa-twitter"></i>
-									</a>
-								</li>
-								<li class="share-item">
-									<a href="#" class="share-button">
-										<i class="share-icon fa fa-pinterest"></i>
-									</a>
-								</li>
-								<li class="share-item">
-									<a href="#" class="share-button">
-										<i class="share-icon fa fa-tumblr"></i>
-									</a>
-								</li>
-							</ul>
-						</div>
-
-						<div class="footer-text sm-top60 clearfix">
-                      
-						</div>
-
-					</div>
-				</div>
-
-				<!-- ACROLL TO TOP
-				================================================== -->
-				<div class="scroll-to-top"><i class="fa fa-angle-up"></i></div>
-			</section>
-
-		</main>
 
 	</div>
 
 	<!-- JAVASCRIPT
     ================================================== -->
-<script src="index.js"></script>
+     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<link rel="stylesheet" type="text/css" href="css/watsonStyle.css" />
+<script src = "script/chatboxScript.js"></script>
 <script type="text/javascript" src="js/jquery.min.js"></script>
 <script type="text/javascript" src="js/jquery-migrate-1.2.1.min.js"></script>
 <script type="text/javascript" src="js/modernizr.custom.js"></script>
