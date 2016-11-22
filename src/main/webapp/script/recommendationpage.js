@@ -22,6 +22,16 @@ xhrGet("Controller?act=getRecommendations", function(responseText){
 	        //console.log(dataCopy[key]);
 	        test1+=dataCopy[key]+ "<br>";
 	    }
+	    console.log("count" + count);
+	    if(event == "TrafficCharacter"){
+	    	event = "Road Blockages";
+	    }
+	    else if (event == "forgot things"){
+	    	event = "Waste Collection Schedule";
+	    }
+	    else if(event == "SocialCharacter"){
+	    	event = "Events in Windsor";
+	    }
 	    console.log("event" + event);
 	    console.log("test1" + test1);
 	    if(count == 1){
@@ -42,7 +52,10 @@ xhrGet("Controller?act=getRecommendations", function(responseText){
 	    
 	    count++;
 	}
-
+	
+	//Loading the other profile info
+	loadProfile();
+	
 }, function(err){
 	console.log(err);
 });
@@ -79,11 +92,48 @@ function xhrGet(url, callback, errback){
 	xhr.send();
 }
 
-//function parseJson(str){
-//	return window.JSON ? JSON.parse(str) : eval('(' + str + ')');
-//}
-//function prettyJson(str){
-//	// If browser does not have JSON utilities, just print the raw string value.
-//	return window.JSON ? JSON.stringify(JSON.parse(str), null, '  ') : str;
-//}
+
+//get connection to get the Profile info
+function loadProfile() {
+  var xhttp;
+  xhttp=new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      displayProfile(xhttp.responseText);
+    }
+  };
+  xhttp.open("GET", "Controller?act=getRecommendationsProfile", true);
+  xhttp.send();
+}
+
+//correctly display the Profile info
+function displayProfile(message){
+	var test = JSON.parse(message);
+	var count =1;
+	console.log("size" + test.length);
+	for(var characters in test){
+ 			var dataCopy = test[characters];
+			console.log("Charater recieved = " + characters );
+			if(characters == "name"){
+				document.getElementById("username").style.display ="block";
+				document.getElementById("usernametext").style.display ="block";
+				document.getElementById('usernametext').innerHTML =dataCopy;
+			}
+			else if (characters == "email") {
+				document.getElementById("useremail").style.display ="block";
+				document.getElementById("useremailtext").style.display ="block";
+				document.getElementById('useremailtext').innerHTML =dataCopy;
+			}
+			else if (characters == "address") {
+				document.getElementById("useraddress").style.display ="block";
+				document.getElementById("useraddresstext").style.display ="block";
+				document.getElementById('useraddresstext').innerHTML =dataCopy;
+			}
+			else if (characters == "zipcode") {
+				document.getElementById("userzipcode").style.display ="block";
+				document.getElementById("userzipcodetext").style.display ="block";
+				document.getElementById('userzipcodetext').innerHTML =dataCopy;
+			}
+	}
+}
 

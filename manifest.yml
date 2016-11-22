@@ -8,6 +8,5 @@ applications:
   host: NewWindsorite
   disk_quota: 1024M
   services:
-  - Conversation-bb
   - Cloudant NoSQL DB-oa
-  
+  - Conversation-bb
