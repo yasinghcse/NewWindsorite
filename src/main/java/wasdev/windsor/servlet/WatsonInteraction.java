@@ -46,18 +46,18 @@ public class WatsonInteraction extends HttpServlet {
 			throws ServletException, IOException {
 
 		// Get the session user
-		HttpSession localSession = request.getSession();
+		HttpSession localSession = request.getSession(false);
 		if (localSession != null) {
 			MessageRequest newMessage = null;
 			MessageResponse response1 = null;
 			if (request.getParameter("new") != null) {
 
 				// dummy function to create the login connection
-				request.setAttribute("userName", "test1");
-				request.setAttribute("password", "test");
-				RequestDispatcher rd = request
-						.getRequestDispatcher("/Controller?act=login&userName=test2&password=test");
-				rd.include(request, response);
+//				request.setAttribute("userName", "test1");
+//				request.setAttribute("password", "test");
+//				RequestDispatcher rd = request
+//						.getRequestDispatcher("/Controller?act=login&userName=test2&password=test");
+//				rd.include(request, response);
 
 				// connecting to the Wastson API
 				service = new ConversationService(ConversationService.VERSION_DATE_2016_07_11);
@@ -129,6 +129,7 @@ public class WatsonInteraction extends HttpServlet {
 						// get user name from session
 						HttpSession session1 = request.getSession(false);
 						UserProfile userProfile = (UserProfile) session1.getAttribute("UserProfile");
+						System.out.println("User Profile going to update = " + userProfile.getName());
 						userProfile.setRecomentation1(null);
 						userProfile.setRecomentation2(null);
 						userProfile.setRecomentation3(null);

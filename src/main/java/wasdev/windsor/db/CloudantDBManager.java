@@ -2,6 +2,7 @@ package wasdev.windsor.db;
 
 import java.util.Map.Entry;
 import java.io.PrintWriter;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -20,7 +21,6 @@ import com.google.gson.JsonParser;
 import newwindsorite.db.UserProfileAlreadyExistentException;
 import newwindsorite.db.UserProfileNotFoundException;
 import wasdev.windsor.resources.UserProfile;
-import wasdev.windsor.resources.WindsoriteUtil;
 
 public class CloudantDBManager {
 
@@ -28,6 +28,9 @@ public class CloudantDBManager {
 	private Database db = null;
 	private String databaseName = "newwindsorite";
 	private static CloudantDBManager singletonCloudant = null;
+	private HashMap<String, UserProfile> dbDebug = new HashMap<String,UserProfile>();
+	
+	private static boolean debugMode = false; 
 
 	/**
 	 *    Private constructor for Singleton Pattern
@@ -41,17 +44,20 @@ public class CloudantDBManager {
 	 * @return Returns the singleton reference to the CloudantDBManager  
 	 */
 	public static CloudantDBManager getInstance() {
-		System.out.println("singletonCloudant" + singletonCloudant);
 		synchronized (CloudantDBManager.class) {
 			if (singletonCloudant == null) {
 				singletonCloudant = new CloudantDBManager();
-				singletonCloudant.cloudant = createClient();
-				try {
-					System.out.println("cgoing for creating db connections");
-					singletonCloudant.db = singletonCloudant.cloudant.database(singletonCloudant.databaseName, true);
-				} catch (Exception e) {
-					System.out.println("inside exception of db not found");
-					throw new RuntimeException("DB Not found", e);
+				System.out.println("######## [DEBUG] It is on debug mode!!!");
+				if (!debugMode) {
+					singletonCloudant.cloudant = createClient();
+					try {
+						singletonCloudant.db = singletonCloudant.cloudant.database(singletonCloudant.databaseName, true);
+					} catch (Exception e) {
+						throw new RuntimeException("DB Not found", e);
+					}
+				} else {
+					System.out.println("######## [DEBUG] dbDebug is : " + singletonCloudant.db);
+					// Instantiates the Hashmap for debug
 				}
 			}
 		}
@@ -76,7 +82,7 @@ public class CloudantDBManager {
 		String password = "93e9e25f03d5b88071c8bce0c124852eb2c122de2644333ad4073a368c935e6a";
 
 
-		//commenting the code , As we are providing the hardcoded user name and password
+		//uncomment me
 //		if (VCAP_SERVICES != null) {
 //			// parse the VCAP JSON structure
 //			JsonObject obj = (JsonObject) new JsonParser().parse(VCAP_SERVICES);
@@ -129,25 +135,33 @@ public class CloudantDBManager {
 	public UserProfile searchUserProfileByUserName(String userName) throws UserProfileNotFoundException {
 		UserProfile retrievedUser = null;
 		if (userName != null) {
-			HashMap<String, Object> foundDocument = null;
-			try {
-				System.out.println("userName" + userName);
-				System.out.println("db*****" + db);
-				foundDocument = db.find(HashMap.class, userName);
-			} catch (NoDocumentException ex) {
-			}
-			if (foundDocument != null) {
-				retrievedUser = new UserProfile(userName);
-				retrievedUser.setName((String)foundDocument.get("Name"));
-				retrievedUser.setEmail((String)foundDocument.get("Email"));
-				retrievedUser.setAddress((String)foundDocument.get("Address"));
-				retrievedUser.setZipCOde((String)foundDocument.get("ZipCode"));
-				retrievedUser.setRecomentation1((String)foundDocument.get("Recomentation1"));					
-				retrievedUser.setRecomentation2((String)foundDocument.get("Recomentation2"));
-				retrievedUser.setRecomentation3((String)foundDocument.get("Recomentation3"));
-				retrievedUser.setPasswordHash((String)foundDocument.get("PasswordHash"));
+			if (!debugMode) {
+				HashMap<String, Object> foundDocument = null;
+				try {
+					foundDocument = db.find(HashMap.class, userName);
+				} catch (NoDocumentException ex) {
+				}
+				if (foundDocument != null) {
+					retrievedUser = new UserProfile(userName);
+					retrievedUser.setName((String)foundDocument.get("Name"));
+					retrievedUser.setEmail((String)foundDocument.get("Email"));
+					retrievedUser.setAddress((String)foundDocument.get("Address"));
+					retrievedUser.setZipCOde((String)foundDocument.get("ZipCode"));
+					retrievedUser.setRecomentation1((String)foundDocument.get("Recomentation1"));					
+					retrievedUser.setRecomentation2((String)foundDocument.get("Recomentation2"));
+					retrievedUser.setRecomentation3((String)foundDocument.get("Recomentation3"));
+					retrievedUser.setPasswordHash((String)foundDocument.get("PasswordHash"));
+				} else {
+					throw new UserProfileNotFoundException("User profile not found");
+				}
 			} else {
-				throw new UserProfileNotFoundException("User profile not found");
+				System.out.println("######## [DEBUG] Search => Before searching is exists");
+				retrievedUser = dbDebug.get(userName);
+				System.out.println("######## [DEBUG] Search => User retrieved is = " + retrievedUser);
+				if (retrievedUser == null) {
+					System.out.println("######## [DEBUG] Search => User retrieved is NULL will throw a UserNotFoundException");
+					throw new UserProfileNotFoundException("User profile not found");
+				}
 			}
 		}
 		return retrievedUser;
@@ -163,27 +177,39 @@ public class CloudantDBManager {
 	 * @throws UserProfileAlreadyExistentException
 	 */
 	public void insertUserProfile(UserProfile newUserProfile) throws UserProfileAlreadyExistentException {
-		HashMap<String, Object> foundDocument = null;
-		try {
-			foundDocument = db.find(HashMap.class, newUserProfile.getUserName());
-		} catch (NoDocumentException ex) {
-		}
-		
-		if (foundDocument == null) {
-			Map<String, Object> cloudantDocument = new HashMap<String, Object>();
-			cloudantDocument.put("_id", newUserProfile.get_id());
-			cloudantDocument.put("UserName", newUserProfile.getUserName());
-			cloudantDocument.put("Name", newUserProfile.getName());
-			cloudantDocument.put("Email",newUserProfile.getEmail());
-			cloudantDocument.put("Address",newUserProfile.getAddress());		
-			cloudantDocument.put("ZipCode",newUserProfile.getZipCOde());
-			cloudantDocument.put("Recomentation1",newUserProfile.getRecomentation1());
-			cloudantDocument.put("Recomentation2",newUserProfile.getRecomentation2());
-			cloudantDocument.put("Recomentation3",newUserProfile.getRecomentation3());
-			cloudantDocument.put("PasswordHash",newUserProfile.getPasswordHash());
-			db.save(cloudantDocument);
+		System.out.println("######## [DEBUG] Insertion => UserProfile = " + newUserProfile);
+		if (!debugMode) {
+			HashMap<String, Object> foundDocument = null;
+			try {
+				foundDocument = db.find(HashMap.class, newUserProfile.getUserName());
+			} catch (NoDocumentException ex) {
+			}
+			
+			if (foundDocument == null) {
+				Map<String, Object> cloudantDocument = new HashMap<String, Object>();
+				cloudantDocument.put("_id", newUserProfile.get_id());
+				cloudantDocument.put("UserName", newUserProfile.getUserName());
+				cloudantDocument.put("Name", newUserProfile.getName());
+				cloudantDocument.put("Email",newUserProfile.getEmail());
+				cloudantDocument.put("Address",newUserProfile.getAddress());		
+				cloudantDocument.put("ZipCode",newUserProfile.getZipCOde());
+				cloudantDocument.put("Recomentation1",newUserProfile.getRecomentation1());
+				cloudantDocument.put("Recomentation2",newUserProfile.getRecomentation2());
+				cloudantDocument.put("Recomentation3",newUserProfile.getRecomentation3());
+				cloudantDocument.put("PasswordHash",newUserProfile.getPasswordHash());
+				db.save(cloudantDocument);
+			} else {
+				throw new UserProfileAlreadyExistentException("User name already used");
+			}
 		} else {
-			throw new UserProfileAlreadyExistentException("User name already used");
+			System.out.println("######## [DEBUG] Insertion => Begore testing if UserProfie exists");
+			if (dbDebug.get(newUserProfile.getUserName()) == null) {
+				System.out.println("######## [DEBUG] Insertion => Does not exist, will insert");
+				System.out.println("######## [DEBUG] Insertion => UserProfile = " + newUserProfile);
+				dbDebug.put(newUserProfile.getUserName(), newUserProfile);
+			} else {
+				throw new UserProfileAlreadyExistentException("User name already used");
+			}
 		}
 	}
 	
@@ -196,15 +222,26 @@ public class CloudantDBManager {
 	 */
 	public void removeUserProfileByUserName(String userName) throws UserProfileNotFoundException {
 		if (userName != null) {
-			HashMap<String, Object> foundDocument = null;
-			try {
-				foundDocument = db.find(HashMap.class, userName);
-			} catch (NoDocumentException ex) {
-			}
-			if (foundDocument != null) {
-				db.remove(foundDocument);
+			if (!debugMode) {
+				HashMap<String, Object> foundDocument = null;
+				try {
+					foundDocument = db.find(HashMap.class, userName);
+				} catch (NoDocumentException ex) {
+				}
+				if (foundDocument != null) {
+					db.remove(foundDocument);
+				} else {
+					throw new UserProfileNotFoundException("User not found");
+				}
 			} else {
-				throw new UserProfileNotFoundException("User not found");
+				System.out.println("######## [DEBUG] Remove => Before removing checks if exists UserName: " + userName);
+				if (dbDebug.get(userName) != null) {
+					System.out.println("######## [DEBUG] Remove => Found a userProfile then it will remove!");
+					dbDebug.remove(userName);
+				} else {
+					System.out.println("######## [DEBUG] Remove => Not Found a userProfile then it will raise an exception NotFound");
+					throw new UserProfileNotFoundException("User not found");
+				}
 			}
 		}
 	}
@@ -219,37 +256,57 @@ public class CloudantDBManager {
 	 */
 	public void updateUserProfileByUserName(UserProfile updatedUser) throws UserProfileNotFoundException {
 		if (updatedUser != null) {
-			HashMap<String, Object> foundDocument = null;
-			try {
-				System.out.println("updatedUser.getUserName() " + updatedUser.getUserName());
-				foundDocument = db.find(HashMap.class, updatedUser.getUserName());
-			} catch (NoDocumentException ex) {
-			}
-			if (foundDocument != null) {
-				foundDocument.put("Name", updatedUser.getName());
-				foundDocument.put("Email",updatedUser.getEmail());
-				foundDocument.put("Address",updatedUser.getAddress());		
-				foundDocument.put("ZipCode",updatedUser.getZipCOde());
-				foundDocument.put("Recomentation1",updatedUser.getRecomentation1());
-				foundDocument.put("Recomentation2",updatedUser.getRecomentation2());
-				foundDocument.put("Recomentation3",updatedUser.getRecomentation3());
-				db.update(foundDocument);
+			if (!debugMode) {
+				HashMap<String, Object> foundDocument = null;
+				try {
+					foundDocument = db.find(HashMap.class, updatedUser.getUserName());
+				} catch (NoDocumentException ex) {
+				}
+				if (foundDocument != null) {
+					foundDocument.put("Name", updatedUser.getName());
+					foundDocument.put("Email",updatedUser.getEmail());
+					foundDocument.put("Address",updatedUser.getAddress());		
+					foundDocument.put("ZipCode",updatedUser.getZipCOde());
+					foundDocument.put("Recomentation1",updatedUser.getRecomentation1());
+					foundDocument.put("Recomentation2",updatedUser.getRecomentation2());
+					foundDocument.put("Recomentation3",updatedUser.getRecomentation3());
+					db.update(foundDocument);
+				} else {
+					throw new UserProfileNotFoundException("User profile not found");
+				}
 			} else {
-				throw new UserProfileNotFoundException("User profile not found");
+				if (dbDebug.get(updatedUser.getUserName()) != null) {
+					UserProfile user = dbDebug.get(updatedUser.getUserName());
+					user.setName(updatedUser.getName());
+					user.setEmail(updatedUser.getEmail());
+					user.setAddress(updatedUser.getAddress());
+					user.setZipCOde(updatedUser.getZipCOde());
+					user.setRecomentation1(updatedUser.getRecomentation1());
+					user.setRecomentation2(updatedUser.getRecomentation2());
+					user.setRecomentation3(updatedUser.getRecomentation3());
+				} else {
+					throw new UserProfileNotFoundException("User not found");
+				}
 			}
 		}
-	}	
-	
-	public static void main(String[] arr) throws UserProfileAlreadyExistentException {
-		CloudantDBManager obj = CloudantDBManager.getInstance();
-		UserProfile u1= new UserProfile("test2");
-		u1.setEmail("test@test.cm");
-		u1.setName("Clovis");
-		u1.setAddress("test test test");
-		u1.setPasswordHash(WindsoriteUtil.generateStringHash("test"));
-		obj.insertUserProfile(u1);
-		
 	}
 	
+	/**
+	 * 	Searches for a User Profile in the Database based on the UserName
+	 * 
+	 * @param userName The User Name to search for its profile
+	 * @return Returns the User profile if found and if not throws UserProfileNotFoundException 
+	 * @throws UserProfileNotFoundException
+	 */
+	public Collection<UserProfile> retrieveAllUserProfiles() {
+		Collection<UserProfile> usersCollection = null;
+		if (!debugMode) {
+			throw new RuntimeException("Needs to be implements for Cloudant");
+		} else {
+			usersCollection = dbDebug.values();
+		}
+		
+		return usersCollection;
+	}
 }
 

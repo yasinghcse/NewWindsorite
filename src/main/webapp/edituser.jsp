@@ -1,3 +1,15 @@
+<%@ page import="wasdev.windsor.resources.*" %>
+<%	
+		UserProfile user1 = null;
+		if (session != null) {
+			user1 = (UserProfile) session.getAttribute("UserProfile");
+		}
+		if (user1 == null) {
+			RequestDispatcher reqDispatcher = getServletConfig().getServletContext().getRequestDispatcher("/login.jsp");
+			reqDispatcher.forward(request, response);
+		}
+%>
+
 <!DOCTYPE html>
 <!--[if IE 8]><html class="no-js lt-ie9" lang="en"> <![endif]-->
 <!--[if gt IE 8]>
@@ -22,10 +34,9 @@
 	<!--A dead simple, responsive boilerplate-->
 	<link rel="stylesheet" href="css/base.css"/>
 	<link rel="stylesheet" href="css/skeleton.css"/>	
-		
+	
 	<!--Icon font-->
 	<link rel="stylesheet" href="css/font-awesome.min.css" />
-	<link rel="stylesheet" href="fonts/Icon-font-7/pe-icon-7-stroke.css" />
 	
 	<!--Owl carousel-->
 	<link rel="stylesheet" href="css/owl.carousel.css"/>
@@ -49,7 +60,8 @@
 		
 </head>
 <body>	
-  
+	
+	<div class="animsition" data-animsition-in="fade-in" data-animsition-out="fade-out">
 	
 		<!-- Navigation panel
 		================================================== -->		
@@ -58,7 +70,7 @@
 			
 				<!-- Logo -->
 				<div class="header-logo-wrap">
-					<div class = "col-sm-4" style="font-size: 26px; margin-top: 21px; border: 2px solid #fffff; padding: 8px 14px;" >|| New Windsorite ||</div>
+					<div class = "col-sm-4" style="font-size: 26px; margin-top: 21px; border: 2px solid #000; padding: 8px 14px;" >New Windsorite</div>
 				</div>
 				
 				<!-- Mobile nav bars -->
@@ -67,51 +79,66 @@
 				</div>
 				
 				<!-- Main Menu -->
-				<div class="nav-wrapper large-nav">
+				<div class="nav-wrapper large-navn callme">
 					<ul class="clearlist">
 						
 						<!-- Menu With Sub -->
+					<%
+						UserProfile user = null;
+						if (session != null) {
+							user = (UserProfile) session.getAttribute("UserProfile");
+						}
+						if (user == null) {
+					%>
 						<li>
-							<a href="home.html" class="active">Home</a>							
-							
+							<a href="home.jsp" class="active">Home</a>							
 						</li>
-						<!-- End Item With Sub -->
-						
-						<!-- Item With Sub -->
 						<li>
-							<a href="about.html" >About</a>
-							
-						</li>
-						<!-- End Item With Sub -->
-						
-						<!-- Item With Sub -->
+							<a href="about.jsp" class="active">About</a>							
+						</li>						
 						<li>
-							<a href="contact.html" >Contact</a>
-							
+							<a href="contact.jsp" class="active">Contact</a>							
 						</li>
-						<!-- End Item With Sub -->
-						
-						<!-- Item With Sub -->
 						<li>
-							<a href="login.html">Login</a>
-							
+							<a href="login.jsp" class="active">Login</a>							
 						</li>
-						<!-- End Item With Sub -->
-						
-						<!-- Item With Sub -->
 						<li>
-							<a href="profile.html">Profile</i></a>
+							<a href="register.jsp" class="active">Register</a>							
 						</li>
-						<!-- End Item With Sub -->
-						
-						
-						
+					<%
+						} else {
+
+					%>
+						<li>
+							<a href="home.jsp" class="active">Home</a>							
+						</li>
+						<li>
+							<a href="about.jsp" class="active">About</a>							
+						</li>						
+						<li>
+							<a href="contact.jsp" class="active">Contact</a>							
+						</li>
+						<li>
+							<a href="recommend.jsp" class="active">Recommendations</a>							
+						</li>
+						<li>
+							<a href="watsonchat.jsp" class="active">Talk To Me</a>							
+						</li>
+						<li>
+							<a href="/Windsorite/Controller?act=logout" class="active">Log Out</a>							
+						</li>
+						<li>
+							<a href="profile.jsp" class="active">Profile</a>							
+						</li>
+						<li>
+							<a href="register.jsp" class="active">Register</a>							
+						</li>
+					<%
+						}
+					%>				
 						<!-- Divider -->
 						<li><a>&nbsp;</a></li>
 						<!-- End Divider -->
-											
-						
-						
 						
 						<!-- Languages -->
 						<li>
@@ -131,39 +158,91 @@
 						
 					 </ul>
 				</div>
-				<!-- End Main Menu -->				
+				<!-- End Main Menu -->					
 
 			</div>
 		</nav>
 		<!-- End Navigation panel -->
 		
+		<!-- End Navigation panel -->
+		
 		<!-- MAIN CONTENT
 		================================================== -->		
-		<main class="cd-main-content">			
+		<main class="cd-main-content">
 			
-			<!-- SECTION ABOUT
-			================================================== -->	
-			<section class="page-section white-section about_me" id="scroll-link">
-				<div class="container">
-					<div class="picture-frame">
-						<img src="images/home/image34.jpg" alt=""/>
+			<!-- TOP SECTION
+			================================================== -->
+			
+			<section class="page-section grey-section innerpage-heading-3">
+				<div class="relative container">
+					<div class="eight columns">
+						<div class="page-heading">
+							<h3 class="fontalt4 hs2">Account</h3>								
+						</div>						
 					</div>
-					<div class="eight columns"></div>
-					<div class="eight columns sp-top100">
-						<div class="section-title sm-bottom80" style="text-align: left;">
-							<h2 class="fontalt4 lp2">Username</h2>
-							<h3 class="hs1 fw400 text-italic nocase">Email</h3>	
-							<h3 class="hs1 fw400 text-italic nocase">Address</h3>
-							<div class="sm-top40">
-							<p class="text-italic fw400 nomargin"></p>							
-							</div>
-						</div>
-						<hr class="nomargin nopadding"/>
-						
-					</div>	
-				</div>
+					<div class="eight columns">
+						<div class="breadcrumbs text-right sm-top10">
+							<a href="#">Home</a>&nbsp;/&nbsp;<a href="#">Pages</a>&nbsp;/&nbsp;<span>Register</span>
+                        </div>
+					</div>
+				</div>				
+			</section>	
+			
+			<!-- SECTION LOGIN
+			================================================== 	-->	
+			<section class="page-section white-section sp-top-bottom100">
+				<div class="container">
 				
-			</section>				
+					
+					
+					<div class="twelve columns" style="margin-left: 13% ;">
+					
+						<div class="section-title-5 text-center">
+						
+							<h3 class="hs2 fontalt4 sm-bottom20 side-line">Edit User Profile</h3>
+							<p class="text-italic fw400"></p>						
+							
+							<form autocomplete="off" id="c_form2" class="form" method="post" action="/Windsorite/Controller">
+							<input type="hidden" name="act" value="updtProf">
+								<div class="clearfix">		
+								
+									<div class="form-group">
+										<input type="text" required="" pattern=".{3,100}" placeholder="Email" class="full_width" id="Email" name="email">
+									</div>
+
+									<div class="form-group">
+										<input type="text" required="" pattern=".{3,100}" placeholder="Address" class="full_width" id="address" name="address">
+									</div>										
+											
+									<div class="form-group">
+										<input type="text" required="" pattern=".{3,100}" placeholder="Zipcode" class="full_width" id="zipcode" name="zipcode">
+									</div>
+									
+  								</div>
+                                
+								<div class="clearfix">
+								
+									<div class="col2-left">       
+										<div class="form-tip text-left sp-top20">
+											<i class="fa fa-info-circle"></i> All the fields are required
+										</div>
+									</div>
+																
+									<div class="col2-right">		
+										<div class="align-right sp-top20">
+											<button id="update" class="btn-bg-black btn-size-0">Update</button>
+										</div>
+									</div>
+								
+								</div>
+							</form>
+							
+						</div>
+						
+					</div>
+					
+				</div>
+			</section>
 			
 			<!-- FOOTER
 			================================================== -->	
@@ -214,11 +293,11 @@
 						<div class="footer-text sm-top60 clearfix">
                         	<!-- Copyright -->
 							<div class="footer-cr fw900">	
-							<a target="_blank" href="#">&copy; || New Windsorite ||</a>.
+							<a target="_blank" href="#">&copy; The Pride 2015</a>.
 							</div>
 							<!-- End Copyright -->
 							<div class="footer-madeby">
-								Made with love by Team || New Windsorite ||.
+								Made with love by Ronak Design Lab.
 							</div>
 							
 						</div>
@@ -252,7 +331,6 @@
 <script type="text/javascript" src="js/TweenMax.min.js"></script>
 <script type="text/javascript" src="js/share.js"></script>
 <script type="text/javascript" src="js/jquery.animsition.min.js"></script>
-
 <script type="text/javascript">
 (function($) { "use strict";
 	$(document).ready(function() {
@@ -283,9 +361,7 @@
 	});  
 })(jQuery);
 </script>
-<script type="text/javascript" src="js/jquery.hoverdir.js"></script>
-<script type="text/javascript" src="js/script.js"></script>
-
+<script type="text/javascript" src="js/script.js"></script>	  
 <!-- End Document
 ================================================== -->
 </body>

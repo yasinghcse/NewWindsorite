@@ -1,3 +1,15 @@
+<%@ page import="wasdev.windsor.resources.*"%>
+<%
+		UserProfile user1 = null;
+		if (session != null) {
+			user1 = (UserProfile) session.getAttribute("UserProfile");
+		}
+		if (user1 == null) {
+			RequestDispatcher reqDispatcher = getServletConfig().getServletContext().getRequestDispatcher("/login.jsp");
+			reqDispatcher.forward(request, response);
+		} 
+%>
+
 <!DOCTYPE html>
 <!--[if IE 8]><html class="no-js lt-ie9" lang="en"> <![endif]-->
 <!--[if gt IE 8]>
@@ -72,37 +84,42 @@
 				</div>
 				
 				<!-- Main Menu -->
-				<div class="nav-wrapper large-nav">
+				<div class="nav-wrapper large-nav callme">
 					<ul class="clearlist">
-						
+
 						<!-- Menu With Sub -->
+						<%
+							UserProfile user = null;
+							if (session != null) {
+								user = (UserProfile) session.getAttribute("UserProfile");
+							}
+							if (user == null) {
+						%>
+						<li><a href="home.jsp" class="active">Home</a></li>
+						<li><a href="about.jsp" class="active">About</a></li>
+						<li><a href="contact.jsp" class="active">Contact</a></li>
+						<li><a href="login.jsp" class="active">Login</a></li>
+						<li><a href="register.jsp" class="active">Register</a></li>
+						<%
+							} else {
+						%>
+						<li><a href="home.jsp" class="active">Home</a></li>
+						<li><a href="about.jsp" class="active">About</a></li>
+						<li><a href="contact.jsp" class="active">Contact</a></li>
 						<li>
-							<a href="home.html" class="active">Home</a>							
-							
+							<a href="recommend.jsp" class="active">Recommendations</a>							
 						</li>
-						
 						<li>
-							<a href="about.html" class="active">About</a>							
-							
+							<a href="watsonchat.jsp" class="active">Talk To Me</a>							
 						</li>
-					
-						
-						<li>
-							<a href="contact.html" class="active">Contact</a>							
-							
-						</li>
-						
-							
-						<li>
-							<a href="login.html" class="active">Login</a>							
-							
-						</li>
-						
-						<li>
-							<a href="profile.html" class="active">Profile</a>							
-							
-						</li>
-						
+						<li><a href="/Windsorite/Controller?act=logout"
+							class="active">Log Out</a></li>
+						<li><a href="profile.jsp" class="active">Profile</a></li>
+						<li><a href="register.jsp" class="active">Register</a></li>
+						<%
+							}
+						%>
+
 						<!-- Divider -->
 						<li><a>&nbsp;</a></li>
 						<!-- End Divider -->

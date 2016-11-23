@@ -179,6 +179,6 @@ public class UserProfile {
 	
 
 	public String toString() {
-		return "_id = " + _id + " / _rev = " + _rev + " / name = " + name + " / userName = " + userName + " / email = " + " / passwordHash = " + passwordHash;
+		return "_id = " + _id + " / _rev = " + _rev + " / name = " + name + " / userName = " + userName + " / email = " + email + " / passwordHash = " + passwordHash + " / Address = " + address + " / zipcode = " + zipCode;
 	}
 }

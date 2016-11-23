@@ -1,3 +1,15 @@
+<%@ page import="wasdev.windsor.resources.*"%>
+<%
+		UserProfile user1 = null;
+		if (session != null) {
+			user1 = (UserProfile) session.getAttribute("UserProfile");
+		}
+		if (user1 == null) {
+			RequestDispatcher reqDispatcher = getServletConfig().getServletContext().getRequestDispatcher("/login.jsp");
+			reqDispatcher.forward(request, response);
+		} 
+%>
+
 <!DOCTYPE html>
 <!--[if IE 8]><html class="no-js lt-ie9" lang="en"> <![endif]-->
 <!--[if gt IE 8]>
@@ -68,8 +80,8 @@
 				<!-- Logo -->
 				<div class="header-logo-wrap">
 					<div class=""
-						style="font-size: 26px; margin-top: 21px; border: 2px solid #000; padding: 8px 14px;">||
-						New Windsorite ||</div>
+						style="font-size: 26px; margin-top: 21px; border: 2px solid #000; padding: 8px 14px;">New
+						Windsorite</div>
 				</div>
 
 				<!-- Mobile nav bars -->
@@ -78,21 +90,41 @@
 				</div>
 
 				<!-- Main Menu -->
-				<div class="nav-wrapper large-nav">
+				<div class="nav-wrapper large-nav callme">
 					<ul class="clearlist">
 
 						<!-- Menu With Sub -->
-						<li><a href="home.html" class="active">Home</a></li>
-
-						<li><a href="about.html" class="active">About</a></li>
-
-
-						<li><a href="contact.html" class="active">Contact</a></li>
-
-
-						<li><a href="login.html" class="active">Login</a></li>
-
-						<li><a href="profile.html" class="active">Profile</a></li>
+						<%
+							UserProfile user = null;
+							if (session != null) {
+								user = (UserProfile) session.getAttribute("UserProfile");
+							}
+							if (user == null) {
+						%>
+						<li><a href="home.jsp" class="active">Home</a></li>
+						<li><a href="about.jsp" class="active">About</a></li>
+						<li><a href="contact.jsp" class="active">Contact</a></li>
+						<li><a href="login.jsp" class="active">Login</a></li>
+						<li><a href="register.jsp" class="active">Register</a></li>
+						<%
+							} else {
+						%>
+						<li><a href="home.jsp" class="active">Home</a></li>
+						<li><a href="about.jsp" class="active">About</a></li>
+						<li><a href="contact.jsp" class="active">Contact</a></li>
+						<li>
+							<a href="recommend.jsp" class="active">Recommendations</a>							
+						</li>
+						<li>
+							<a href="watsonchat.jsp" class="active">Talk To Me</a>							
+						</li>
+						<li><a href="/Windsorite/Controller?act=logout"
+							class="active">Log Out</a></li>
+						<li><a href="profile.jsp" class="active">Profile</a></li>
+						<li><a href="register.jsp" class="active">Register</a></li>
+						<%
+							}
+						%>
 
 						<!-- Divider -->
 						<li><a>&nbsp;</a></li>
@@ -125,81 +157,102 @@
 		================================================== -->
 		<main class="cd-main-content"> <!-- TOP SECTION
 			================================================== -->
-		<div class="col-sm-12">
-			<div class="col-sm-8"></div>
-			<div class="col-sm-4"
-				style="font-size: 26px; margin-top: 21px; border: 2px solid #000; padding: 8px 14px;">
-				<table>
-					<tr>
-						<td>
-							<h3 id="username" style="display: none;">Name:</h3>
-						</td>
-						<td>
-							<h3 id="usernametext" style="display: none;"></h3>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<h3 id="useremail" style="display: none;">Email:</h3>
-						</td>
-						<td>
-							<h3 id="useremailtext" style="display: none;"></h3>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<h3 id="useraddress" style="display: none;">Address:</h3>
-						</td>
-						<td>
-							<h3 id="useraddresstext" style="display: none;"></h3>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<h3 id="userzipcode" style="display: none;">Zipcode:</h3>
-						</td>
-						<td>
-							<h3 id="userzipcodetext" style="display: none;"></h3>
-						</td>
-					</tr>
-				</table>
+		<section class="page-section black-section innerpage-heading-2"
+			style="padding-top: 44px; padding-bottom: 0px;">
+			<div class="container">
+				<div class="col-sm-4">
+					<div class="page-heading ph-left">
+						<h1 class="sm-bottom10 fontalt4 hs3">Recommendation Page</h1>
+						<h3 class="hs1 fw400 fontalt4 lp2">Here are your some ideas</h3>
+					</div>
+				</div>
+				<div class="col-sm-8">
+					<div class="col-sm-6"></div>
+					<div class="col-sm-6" style="text-align: left;">
+						<table>
+							<tr>
+								<h3 class="hs1 fw400 fontalt4 lp2" id="username"
+									style="display: none;">
+									Username:<span id="usernametext" style="display: none;"></span>
+								</h3>
+							</tr>
+							<tr>
+								<h3 class="hs1 fw400 fontalt4 lp2" id="useremail"
+									style="display: none;">
+									Email:<span id="useremailtext" style="display: none;"></span>
+								</h3>
+							</tr>
+							<tr>
+								<h3 class="hs1 fw400 fontalt4 lp2" id="useraddress"
+									style="display: none;">
+									Address:<span id="useraddresstext" style="display: none;"></span>
+								</h3>
+							</tr>
+							<tr>
+								<h3 class="hs1 fw400 fontalt4 lp2" id="userzipcode"
+									style="display: none;">
+									ZipCode:<span id="userzipcodetext" style="display: none;"></span>
+								</h3>
+							</tr>
+						</table>
+					</div>
+
+				</div>
 			</div>
+		</section>
+
+
+
+
+
+
+		<div class="col-sm-12" style="margin-top: 3%;">
+			<div class="col-sm-12">
+
+				<div class="col-sm-2"></div>
+				<div class="col-sm-8"
+					style="font-size: 26px; margin-top: 21px; border: 2px solid #000; padding: 8px 14px;">
+					<!-- ACCORDION STYLE
+			================================================== -->
+					<section>
+						<div class="#">
+							<div class="#">
+								<div class="accordion">
+									<div class="accordion_in" id="rec1" style="display: none;">
+										<div class="acc_head black-section" id="title1"></div>
+										<div class="acc_content white-section">
+											<p id="r1"></p>
+										</div>
+									</div>
+
+									<div class="accordion_in" id="rec2" style="display: none;">
+										<div class="acc_head black-section" id="title2"></div>
+										<div class="acc_content white-section">
+											<p id="r2"></p>
+										</div>
+									</div>
+
+									<div class="accordion_in" id="rec3" style="display: none;">
+										<div class="acc_head black-section" id="title3"></div>
+										<div class="acc_content white-section">
+											<p id="r3"></p>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</section>
+				</div>
+			</div>
+
 		</div>
 
 
 		<div class="col-sm-2"></div>
-		<div class="col-sm-8"
-			style="font-size: 26px; margin-top: 21px; border: 2px solid #000; padding: 8px 14px;">
+		<div class="col-sm-8">
 			<!-- ACCORDION STYLE
 			================================================== -->
-			<section>
-				<div class="#">
-					<div class="#">
-						<div class="accordion">
-							<div class="accordion_in" id="rec1" style="display: none;">
-								<div class="acc_head black-section" id="title1"></div>
-								<div class="acc_content white-section">
-									<p id="r1"></p>
-								</div>
-							</div>
 
-							<div class="accordion_in" id="rec2" style="display: none;">
-								<div class="acc_head black-section" id="title2"></div>
-								<div class="acc_content white-section">
-									<p id="r2"></p>
-								</div>
-							</div>
-
-							<div class="accordion_in" id="rec3" style="display: none;">
-								<div class="acc_head black-section" id="title3"></div>
-								<div class="acc_content white-section">
-									<p id="r3"></p>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</section>
 		</div>
 		<div class="col-sm-2"></div>
 
@@ -245,7 +298,15 @@
 						</ul>
 					</div>
 
-					<div class="footer-text sm-top60 clearfix"></div>
+					<div class="footer-text sm-top60 clearfix">
+						<!-- Copyright -->
+						<div class="footer-cr fw900">
+							<a target="_blank" href="#">&copy;New Windsorite</a>.
+						</div>
+						<!-- End Copyright -->
+						<div class="footer-madeby">Made by Team NewWindsorite</div>
+
+					</div>
 
 				</div>
 			</div>
@@ -309,7 +370,6 @@
 
 									overlayClass : 'animsition-overlay-slide',
 									overlayParentElement : 'body'
-
 								});
 					});
 		})(jQuery);
@@ -325,7 +385,6 @@
 			$(document).ready(function() {
 				$(".accordion").smk_Accordion({
 					closeAble : true
-
 				});
 			});
 

@@ -1,3 +1,5 @@
+<%@ page import="wasdev.windsor.resources.*" %>
+
 <!DOCTYPE html>
 <!--[if IE 8]><html class="no-js lt-ie9" lang="en"> <![endif]-->
 <!--[if gt IE 8]>
@@ -67,36 +69,63 @@
 				</div>
 				
 				<!-- Main Menu -->
-				<div class="nav-wrapper large-nav">
+				<div class="nav-wrapper large-nav callme">
 					<ul class="clearlist">
 						
 						<!-- Menu With Sub -->
+					<%
+						UserProfile user = null;
+						if (session != null) {
+							user = (UserProfile) session.getAttribute("UserProfile");
+						}
+						if (user == null) {
+					%>
 						<li>
-							<a href="home.html" class="active">Home</a>							
-							
+							<a href="home.jsp" class="active">Home</a>							
 						</li>
-						
 						<li>
-							<a href="about.html" class="active">About</a>							
-							
-						</li>
-					
-						
+							<a href="about.jsp" class="active">About</a>							
+						</li>						
 						<li>
-							<a href="contact.html" class="active">Contact</a>							
-							
+							<a href="contact.jsp" class="active">Contact</a>							
 						</li>
-						
-							
 						<li>
-							<a href="login.html" class="active">Login</a>							
-							
+							<a href="login.jsp" class="active">Login</a>							
 						</li>
-						
 						<li>
-							<a href="profile.html" class="active">Profile</a>							
-							
+							<a href="register.jsp" class="active">Register</a>							
 						</li>
+					<%
+						} else {
+
+					%>
+						<li>
+							<a href="home.jsp" class="active">Home</a>							
+						</li>
+						<li>
+							<a href="about.jsp" class="active">About</a>							
+						</li>						
+						<li>
+							<a href="contact.jsp" class="active">Contact</a>							
+						</li>
+					<li>
+							<a href="recommend.jsp" class="active">Recommendations</a>							
+						</li>
+						<li>
+							<a href="watsonchat.jsp" class="active">Talk To Me</a>							
+						</li>
+						<li>
+							<a href="/Windsorite/Controller?act=logout" class="active">Log Out</a>							
+						</li>
+						<li>
+							<a href="profile.jsp" class="active">Profile</a>							
+						</li>
+						<li>
+							<a href="register.jsp" class="active">Register</a>							
+						</li>
+					<%
+						}
+					%>		
 						<!-- End Item With Sub -->
 						
 						
@@ -353,8 +382,6 @@
 	
 		</main>		
 
-	</div>
-	
 	<!-- JAVASCRIPT
     ================================================== -->
 <script type="text/javascript" src="js/jquery.min.js"></script>
@@ -402,7 +429,7 @@
 	});  
 })(jQuery);
 </script>
-<script type="text/javascript" src="http://maps.google.com/maps/api/js?key=AIzaSyChMitvgNDHa9YxpdU9O9MuPV-pvixPdro&sensor=false&amp;language=en"></script>
+<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false&amp;language=en"></script>
 <script type="text/javascript" src="js/gmap3.min.js"></script>
 <script type="text/javascript" src="js/map-init.js"></script>
 <script type="text/javascript" src="js/contact-form.js"></script>

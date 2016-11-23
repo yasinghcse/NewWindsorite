@@ -79,7 +79,6 @@ function loadDoc(url, message) {
 }
 
 
-
 function resetConversation() {
 	var xhttp;
 	console.log("inside reset conversation");

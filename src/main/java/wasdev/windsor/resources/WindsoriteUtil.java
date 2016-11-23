@@ -106,6 +106,12 @@ public class WindsoriteUtil {
 	      props.put("mail.smtp.starttls.enable", "true");
 	      props.put("mail.smtp.host", host);
 	      props.put("mail.smtp.port", "587");
+	      
+//	      	    		  mail.smtp.port = 465
+//	    		  mail.smtp.starttls.enable = true
+//	    		  mail.smtp.socketFactory.port = 465
+//	    		  mail.smtp.socketFactory.class = javax.net.ssl.SSLSocketFactory
+//		
 
 	      // Get the Session object.
 	      Session session = Session.getInstance(props,

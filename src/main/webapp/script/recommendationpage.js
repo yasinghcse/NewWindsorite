@@ -5,7 +5,7 @@
 xhrGet("Controller?act=getRecommendations", function(responseText){
 	// add to document
 	var mytitle = document.getElementById('message');
-	//console.log(responseText);
+	console.log(responseText);
 		
 	//---------------
 	var test = JSON.parse(responseText);
@@ -108,6 +108,7 @@ function loadProfile() {
 
 //correctly display the Profile info
 function displayProfile(message){
+	console.log("messgae" + message);
 	var test = JSON.parse(message);
 	var count =1;
 	console.log("size" + test.length);

@@ -1,3 +1,5 @@
+<%@ page import="wasdev.windsor.resources.*" %>
+
 <!DOCTYPE html>
 <!--[if IE 8]><html class="no-js lt-ie9" lang="en"> <![endif]-->
 <!--[if gt IE 8]>
@@ -58,7 +60,7 @@
 			
 				<!-- Logo -->
 				<div class="header-logo-wrap">
-					<div class = "col-sm-4" style="font-size: 26px; margin-top: 21px; border: 2px solid #000; padding: 8px 14px;" >|| New Windsorite ||</div>
+					<div class = "col-sm-4" style="font-size: 26px; margin-top: 21px; border: 2px solid #000; padding: 8px 14px;" >New Windsorite</div>
 				</div>
 				
 				<!-- Mobile nav bars -->
@@ -67,37 +69,63 @@
 				</div>
 				
 				<!-- Main Menu -->
-				<div class="nav-wrapper large-nav">
+				<div class="nav-wrapper large-navn callme">
 					<ul class="clearlist">
 						
 						<!-- Menu With Sub -->
+					<%
+						UserProfile user = null;
+						if (session != null) {
+							user = (UserProfile) session.getAttribute("UserProfile");
+						}
+						if (user == null) {
+					%>
 						<li>
-							<a href="home.html" class="active">Home</a>							
-							
+							<a href="home.jsp" class="active">Home</a>							
 						</li>
-						
 						<li>
-							<a href="about.html" class="active">About</a>							
-							
-						</li>
-					
-						
+							<a href="about.jsp" class="active">About</a>							
+						</li>						
 						<li>
-							<a href="contact.html" class="active">Contact</a>							
-							
+							<a href="contact.jsp" class="active">Contact</a>							
 						</li>
-						
-							
 						<li>
-							<a href="login.html" class="active">Login</a>							
-							
+							<a href="login.jsp" class="active">Login</a>							
 						</li>
-						
 						<li>
-							<a href="profile.html" class="active">Profile</a>							
-							
+							<a href="register.jsp" class="active">Register</a>							
 						</li>
-						
+					<%
+						} else {
+
+					%>
+						<li>
+							<a href="home.jsp" class="active">Home</a>							
+						</li>
+						<li>
+							<a href="about.jsp" class="active">About</a>							
+						</li>						
+						<li>
+							<a href="contact.jsp" class="active">Contact</a>							
+						</li>
+						<li>
+							<a href="recommend.jsp" class="active">Recommendations</a>							
+						</li>
+						<li>
+							<a href="watsonchat.jsp" class="active">Talk To Me</a>							
+						</li>
+						<li>
+							<a href="/Windsorite/Controller?act=logout" class="active">Log Out</a>							
+						</li>
+						<li>
+							<a href="profile.jsp" class="active">Profile</a>							
+						</li>
+						<li>
+							<a href="register.jsp" class="active">Register</a>							
+						</li>
+					<%
+						}
+					%>		
 						<!-- Divider -->
 						<li><a>&nbsp;</a></li>
 						<!-- End Divider -->
@@ -126,6 +154,8 @@
 		</nav>
 		<!-- End Navigation panel -->
 		
+		<!-- End Navigation panel -->
+		
 		<!-- MAIN CONTENT
 		================================================== -->		
 		<main class="cd-main-content">
@@ -142,119 +172,87 @@
 					</div>
 					<div class="eight columns">
 						<div class="breadcrumbs text-right sm-top10">
-							<a href="#">Home</a>&nbsp;/&nbsp;<a href="#">Pages</a>&nbsp;/&nbsp;<span>Login</span>
+							<a href="#">Home</a>&nbsp;/&nbsp;<a href="#">Pages</a>&nbsp;/&nbsp;<span>Register</span>
                         </div>
 					</div>
 				</div>				
 			</section>	
 			
-			<!-- LOGIN
-			================================================== -->	
+			<!-- SECTION LOGIN
+			================================================== 	-->	
 			<section class="page-section white-section sp-top-bottom100">
-				<div class="container">		
-				
-					<div class="offset-by-five eleven columns">		
+				<div class="container">
+					<%
+					String messageSignUp = (String) request.getAttribute("SignUpMessage");
+					if (messageSignUp == null) {
+						// do nothing, first long try
+					} else {
+						// Got a message back from the Servlet Controller
+						out.print("<div class=\"alert alert-red\">");
+						out.print("<p><strong>");
+						out.print(messageSignUp);
+						out.print("</strong></p>");
+						out.print("</div>");
+					}
+				 %>
+					<div class="twelve columns" style="margin-left: 13% ;">
 					
-						<div class="accordion accordion2">	
+						<div class="section-title-5 text-center">
 						
-							<!-- Active tab -->
-							<div class="accordion_in  acc_active">
+							<h3 class="hs2 fontalt4 sm-bottom20 side-line">Don't have an Account? Register Now.</h3>
+							<p class="text-italic fw400"></p>						
 							
-								<div class="acc_head black-section"><h3 class="hs1 fontalt4 lp1">Login</h3></div>
+							<form autocomplete="off" id="c_form2" class="form" method="post" action="/Windsorite/Controller">
+								<input type="hidden" name="act" value="insProf">
+								<div class="clearfix">		
 								
-								<div class="acc_content white-section">
-									<form autocomplete="off" id="c_form" class="form">
-										<div class="clearfix">								
-												
-											<!-- Name -->
-											<div class="form-group">
-												<input type="text" required="" pattern=".{3,100}" placeholder="Username" class="full_width" id="username" name="username">
-											</div>
-											
-											<!-- Email -->
-											<div class="form-group">
-												<input type="password" required="" pattern=".{5,100}" placeholder="Password" class="full_width" id="password" name="password">
-											</div>
-												
-										</div>
-											
-										<div class="clearfix">
-											
-											<div class="col2-left">									
-												<div class="form-tip sp-top20">
-													<a href="">Forgot Password?</a>
-												</div>
-											</div>
-																		
-											<div class="col2-right">		
-												<div class="align-right sp-top20">
-													<button id="submit_btn" class="btn-bg-black btn-size-0">Login</button>
-												</div>
-											</div>
-											
-										</div>
-										
-									</form>
-								</div>
-							</div>
+									<div class="form-group">
+										<input type="text" required="" pattern=".{3,100}" placeholder="Email" class="full_width" id="Email" name="email">
+									</div>
+									
+									
+									<div class="form-group">
+										<input type="text" required="" pattern=".{3,100}" placeholder="Username" class="full_width" id="username2" name="username">
+									</div>
+									
+									<div class="form-group">
+										<input type="text" required="" pattern=".{3,100}" placeholder="Name" class="full_width" id="Name" name="name">
+									</div>
+									
+									
+									<div class="form-group">
+										<input type="password" required="" pattern=".{5,100}" placeholder="Password" class="full_width" id="password2" name="password">
+									</div>
 
-							<div class="accordion_in">
+									<div class="form-group">
+										<input type="text" required="" pattern=".{3,100}" placeholder="Address" class="full_width" id="address" name="address">
+									</div>										
+											
+									<div class="form-group">
+										<input type="text" required="" pattern=".{3,100}" placeholder="Zipcode" class="full_width" id="zipcode" name="zipcode">
+									</div>
+									
+									
+								
+								</div>
+                                
+								<div class="clearfix">
+								
+									<div class="col2-left">       
+										<div class="form-tip text-left sp-top20">
+											<i class="fa fa-info-circle"></i> All the fields are required
+										</div>
+									</div>
+																
+									<div class="col2-right">		
+										<div class="align-right sp-top20">
+											<button id="submit_btn2" class="btn-bg-black btn-size-0">Register</button>
+										</div>
+									</div>
+								
+								</div>
+							</form>
 							
-								<div class="acc_head black-section"><h3 class="hs1 fontalt4 lp1">Registration</h3></div>
-								
-								<div class="acc_content white-section">
-									<form autocomplete="off" id="c_form2" class="form">
-										<div class="clearfix">
-											
-											<div class="form-group">
-												<input type="text" required="" pattern=".{3,100}" placeholder="Name" class="full_width" id="Name" name="name">
-											</div>
-
-											<div class="form-group">
-												<input type="email" required="" pattern=".{3,100}" placeholder="Email" class="full_width" id="email2" name="email">
-											</div>
-
-											<div class="form-group">
-												<input type="text" required="" pattern=".{3,100}" placeholder="Username" class="full_width" id="username2" name="username">
-											</div>
-
-
-											<div class="form-group">
-												<input type="password" required="" pattern=".{5,100}" placeholder="Password" class="full_width" id="password2" name="password">
-											</div>										
-											
-											<div class="form-group">
-												<input type="text" required="" pattern=".{3,100}" placeholder="Address" class="full_width" id="address" name="address">
-											</div>										
-											
-											<div class="form-group">
-												<input type="text" required="" pattern=".{3,100}" placeholder="Zipcode" class="full_width" id="zipcode" name="zipcode">
-											</div>
-											
-										</div>
-											
-										<div class="clearfix">
-											
-											<div class="col2-left">	  
-												<div class="form-tip text-left sp-top20">
-													<i class="fa fa-info-circle"></i> All the fields are required
-												</div>
-											</div>
-																		
-											<div class="col2-right">		
-												<div class="align-right sp-top20">
-													<button id="submit_btn2" class="btn-bg-black btn-size-0">Register</button>
-												</div>
-											</div>
-											
-											
-										</div>
-										
-									</form>
-								</div>
-								
-							</div>						
-										
 						</div>
 						
 					</div>
@@ -311,11 +309,11 @@
 						<div class="footer-text sm-top60 clearfix">
                         	<!-- Copyright -->
 							<div class="footer-cr fw900">	
-							<a target="_blank" href="#">&copy; || New Windsorite ||</a>.
+							<a target="_blank" href="#">&copy; The Pride 2015</a>.
 							</div>
 							<!-- End Copyright -->
 							<div class="footer-madeby">
-								Made with love by Team || New Windsorite ||.
+								Made with love by Ronak Design Lab.
 							</div>
 							
 						</div>
@@ -379,20 +377,7 @@
 	});  
 })(jQuery);
 </script>
-<script type="text/javascript" src="js/smk-accordion.js"></script>
-<script type="text/javascript" src="js/script.js"></script>
-
-<script type="text/javascript">
-(function($) { "use strict";
-
-	$(document).ready(function() {
-	 	$(".accordion").smk_Accordion({
-				closeAble: true 
-		});
-	});	
-	
-})(jQuery);
-</script> 
+<script type="text/javascript" src="js/script.js"></script>	  
 <!-- End Document
 ================================================== -->
 </body>

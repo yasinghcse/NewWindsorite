@@ -2,6 +2,7 @@ package wasdev.windsor.facade;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Collection;
 
 import newwindsorite.db.UserProfileAlreadyExistentException;
 import newwindsorite.db.UserProfileNotFoundException;
@@ -77,6 +78,15 @@ public class NewWindsoriteFacade {
 	 */
 	public void updateUserProfile(UserProfile userProfile) throws UserProfileNotFoundException {
 		cloudantManager.updateUserProfileByUserName(userProfile);
+	}
+	
+	/**
+	 * 	Retrieves a collection of users to send email recomentations
+	 * 
+	 * @return
+	 */
+	public Collection<UserProfile> retrieveAllUserProfiles() {
+		return cloudantManager.retrieveAllUserProfiles();
 	}
 	
 	
