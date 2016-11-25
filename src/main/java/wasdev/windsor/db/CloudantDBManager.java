@@ -47,7 +47,7 @@ public class CloudantDBManager {
 		synchronized (CloudantDBManager.class) {
 			if (singletonCloudant == null) {
 				singletonCloudant = new CloudantDBManager();
-				System.out.println("######## [DEBUG] It is on debug mode!!!");
+				System.out.println("######### [DEBUG] It is on debug mode!!!");
 				if (!debugMode) {
 					singletonCloudant.cloudant = createClient();
 					try {
