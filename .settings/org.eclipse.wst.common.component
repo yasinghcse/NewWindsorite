@@ -6,6 +6,6 @@
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/test/java"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/test"/>
         <property name="java-output-path" value="/NewWindsorite/target/classes"/>
-        <property name="context-root" value="GoBot"/>
+        <property name="context-root" value="Windsorite"/>
     </wb-module>
 </project-modules>
